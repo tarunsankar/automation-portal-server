@@ -47,12 +47,4 @@ router.post('/login', function(req, res) {
 
 });
 
-/**
- * Function to check user session. Called from Angular when user navigates from one page to another
- * Returns 401 - Unauthorized when there is no session
- */
-router.post('/checkSession', jwtservice.passport.authenticate('jwt', { session: false }), function(req, res) {
-    res.status(200).json({message: "success"});
-});
-
 module.exports = router;

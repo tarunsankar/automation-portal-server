@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const express = require('express');
 const fs = require('fs');
 const Promise = require("bluebird");
@@ -13,25 +14,17 @@ const jwtservice = require('../services/jwtservice');
 
 const router = express.Router();
 
-/**
- * Function to save holiday dates entered in the UI in a flat file
- * Retries all the date entries in "req.body.holidayDates" and writes it to the file. It's always a write and not append
- * Works only when user has a valid session
- */
-router.post('/saveDates', jwtservice.passport.authenticate('jwt', { session: false }), function(req, res) {
-	const holidayDates = req.body.holidayDates ? req.body.holidayDates : "";
-	log4jservice.log("Holiday date update",holidayDates);
-});
-
+// Get the user data array from configuration file
+const usersArray = configservice.loginCredentials;
 
 /**
- * Function to save holiday dates entered in the UI in a flat file
- * Retries all the date entries in "req.body.holidayDates" and writes it to the file. It's always a write and not append
+ * Function to return the card data of the logged-in user
  * Works only when user has a valid session
  */
-router.get('/getCards', function(req, res) {
-	log4jservice.log("Cards data ",configservice.cards);
-	res.status(200).json({message: "success", cards: configservice.cards});
+router.get('/getCards', jwtservice.passport.authenticate('jwt', { session: false }),  function(req, res) {
+	log4jservice.info("req.user.id",req.user.id);
+	const user = usersArray[_.findIndex(usersArray, {id: req.user.id})];
+	res.status(200).json({message: "success", cards: user.cards});
 });
 
 module.exports = router;

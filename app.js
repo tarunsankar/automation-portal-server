@@ -38,8 +38,7 @@ const accessLogStream = rfs('access.log', {
 
 // Initialize the ExpressJS application
 const app = express();
-app.use(cors());
-app.options('*', cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3006'}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
