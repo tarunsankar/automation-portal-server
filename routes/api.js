@@ -24,4 +24,14 @@ router.post('/saveDates', jwtservice.passport.authenticate('jwt', { session: fal
 });
 
 
+/**
+ * Function to save holiday dates entered in the UI in a flat file
+ * Retries all the date entries in "req.body.holidayDates" and writes it to the file. It's always a write and not append
+ * Works only when user has a valid session
+ */
+router.get('/getCards', function(req, res) {
+	log4jservice.log("Cards data ",configservice.cards);
+	res.status(200).json({message: "success", cards: configservice.cards});
+});
+
 module.exports = router;

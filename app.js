@@ -1,5 +1,6 @@
 const _ = require("lodash");
 const express = require('express');
+const cors = require('cors');
 const fs = require('fs');
 const Promise = require("bluebird");
 const request = require('request-promise');
@@ -37,6 +38,8 @@ const accessLogStream = rfs('access.log', {
 
 // Initialize the ExpressJS application
 const app = express();
+app.use(cors());
+app.options('*', cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
